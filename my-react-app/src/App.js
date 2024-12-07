@@ -1,14 +1,38 @@
 import React from "react";
 import styled from "styled-components";
+import  { useState } from "react";
 
 const App = () => {
+    const [activeProject, setActiveProject] = useState(null);
+
+  const closePopup = () => setActiveProject(null);
+   
+  const projectDemos = {
+    locationTracking: "Details about the Location Tracking project.",
+    cdrGenerator: "Details about the Call Detail Record Generator project.",
+    skinCancerDetection: "Details about the Skin Cancer Detection project.",
+    nerSystem: "Details about the NER System with SpaCy project.",
+    aiChatbot: "Details about the AI Chatbot project.",
+  };
+  const imagedemo = {
+    locationTracking: "/images/location.jpg",
+    cdrGenerator: "/images/cdr.jpg",
+    skinCancerDetection: "/images/skinreport.pdf",
+    nerSystem: "/images/ner.jpg",
+    aiChatbot: "/images/ai.jpg",
+  };
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/Resume/Nitesh Resume(Ats2).pdf';
+    link.download = 'Nitesh_Resume.pdf'; // Suggested file name
+    link.click();
+  };
   return (
     <Container>
       <Navbar>
         <Menu>
           <MenuItem>Report</MenuItem>
           <MenuItem>Portfolio</MenuItem>
-          <MenuItem>Download</MenuItem>
           <ResumeButton>Resume</ResumeButton>
         </Menu>
       </Navbar>
@@ -43,7 +67,7 @@ const App = () => {
            
             <p>Web Development</p>
             <DetailCard className="details">
-              <p>Django, HTML/CSS</p>
+              <p>Django, HTML/CSS, React</p>
             </DetailCard>
           </SkillCard>
           <SkillCard>
@@ -60,11 +84,14 @@ const App = () => {
         <h2>Projects</h2>
         <Projects>
           <Project>
-            <h3>Defense Project</h3>
+            <h3>Location Tracking</h3>
             <p>
               Predicting future locations based on past data using Markov
               Chains.
             </p>
+             <Button onClick={() => setActiveProject("locationTracking")}>
+              View Map
+            </Button>
           </Project>
           <Project>
             <h3>Call Detail Record Generator</h3>
@@ -72,6 +99,9 @@ const App = () => {
               Built a web interface with Django to generate CDR data based on
               previous records.
             </p>
+             <Button onClick={() => setActiveProject("cdrGenerator")}>
+              Example
+            </Button>
           </Project>
           <Project>
             <h3>Skin Cancer Detection</h3>
@@ -79,6 +109,9 @@ const App = () => {
               Used CNNs for detecting skin cancer. Focused on robust data
               preprocessing and model evaluation.
             </p>
+              <Button onClick={() => setActiveProject("skinCancerDetection")}>
+              Example
+            </Button>
           </Project>
           <Project>
             <h3>NER System with SpaCy</h3>
@@ -86,8 +119,32 @@ const App = () => {
               Implemented an NLP-based system with retraining capabilities for
               custom data models.
             </p>
+            <Button onClick={() => setActiveProject("nerSystem")}>
+              Result
+            </Button>
+          </Project>
+          <Project>
+          <h3>AI Chatbot</h3>
+<p>
+  Fine-tune AI models on your custom data to enhance customer support or automate tasks with an intelligent chatbot.
+</p>
+ <Button onClick={() => setActiveProject("aiChatbot")}>
+              View Demo
+            </Button>
+            
           </Project>
         </Projects>
+        {activeProject && (
+          <PopupOverlay>
+            <PopupBox>
+              <CloseButton onClick={closePopup}>&times;</CloseButton>
+              <h3>{activeProject.replace(/([A-Z])/g, " $1")}</h3>
+              <p>{projectDemos[activeProject]}</p>
+              <DemoImage src={imagedemo[activeProject]} alt={`${activeProject} Demo`} />
+
+            </PopupBox>
+          </PopupOverlay>
+        )}
       </Section>
 
       <Section>
@@ -95,15 +152,15 @@ const App = () => {
         <Timeline>
           <li>
             <strong>2024:</strong> B-Tech in CSE (Data Science) - Haldia
-            Institute of Technology (CGPA: 8.5)
+            Institute of Technology 
           </li>
           <li>
-            <strong>2022:</strong> Higher Secondary - Himalayan Public School
-            (77.4%)
+            <strong>2019:</strong> Higher Secondary - Himalayan Public School
+            
           </li>
           <li>
             <strong>2017:</strong> Secondary School - St. Paul's High School
-            (86%)
+           
           </li>
         </Timeline>
       </Section>
@@ -112,7 +169,7 @@ const App = () => {
         <h2>Work Experience</h2>
         <Projects>
           <Project>
-            <h3>Data Analyst Intern</h3>
+            <h3>Data Analyst  & ML/AI Intern</h3>
             <p>APT Software Avenues PVT Ltd (2023 - 2024)</p>
             <p>
               Developed a web-based app with Django and Python to analyze and
@@ -122,7 +179,9 @@ const App = () => {
         </Projects>
       </Section>
 
-      <DownloadButton>Download Resume</DownloadButton>
+      <DownloadButton as="button" onClick={handleDownload}>
+  Download Resume
+</DownloadButton>
     </Container>
   );
 };
@@ -193,8 +252,14 @@ const Header = styled.header`
   }
 
   p {
-    font-size: 1.3rem;
-    color: #ccc;
+    font-size: 1.0rem; /* Slightly larger font size */
+    
+    color: #ffe600; /* Use a contrasting, bright color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Adds depth with a shadow */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Optional gradient background */
+    padding: 10px; /* Adds space around the text */
+    border-radius: 10px; /* Rounds the edges for a softer look */
+    display: inline-block; /* Keeps the background tight around the text */
   }
 `;
 
@@ -227,11 +292,7 @@ const SkillCard = styled.div`
   transform: perspective(1000px);
   transition: transform 0.5s ease;
 
-  img {
-    margin-bottom: 12px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-  }
+ 
 
   p {
     font-size: 1.1rem;
@@ -264,15 +325,17 @@ const DetailCard = styled.div`
   overflow: auto;
 
   p {
-    font-size: 1.1rem;
-    line-height: 1.4;
+    font-size: 1.0rem;
+    line-height: 1.0;
   }
 `;
 
 const Projects = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Single row layout */
+  column-gap: 10px; /* Adjust horizontal spacing */
+  row-gap: 0px; /* No vertical spacing since it's a single row */
+  justify-items: center;
 `;
 
 const Project = styled.div`
@@ -342,4 +405,89 @@ const AvatarContainer = styled.div`
   background-position: center; /* Centers the image */
   position: relative;
   border-radius: 50%; /* If you want a circular container */
+`;
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+`;
+// const Project = styled.div`
+//   background: #1f1f37;
+//   border-radius: 10px;
+//   padding: 15px;
+//   transition: 0.3s;
+
+//   h3 {
+//     color: #feb47b;
+//   }
+
+//   p {
+//     font-size: 16px;
+//     color: #d1d1d1;
+//     margin: 10px 0;
+//   }
+
+//   &:hover {
+//     background: #282847;
+//     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+//   }
+// `;
+
+const Button = styled.button`
+  background: linear-gradient(145deg, #ff7e5f, #feb47b);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
+  }
+`;
+
+const PopupOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const PopupBox = styled.div`
+  background: #1f1f37;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+  
+
+  h3 {
+    color: #feb47b;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #d1d1d1;
+    margin-bottom: 20px;
+  }
+`;
+const DemoImage = styled.img`
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: auto;
 `;
