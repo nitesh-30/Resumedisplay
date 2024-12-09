@@ -18,7 +18,7 @@ const App = () => {
     locationTracking: "/images/location.jpg",
     cdrGenerator: "/images/cdr.jpg",
     skinCancerDetection: "/images/skinreport.pdf",
-    nerSystem: "/images/ner.jpg",
+    nerSystem: "/images/ner.png",
     aiChatbot: "/images/ai.jpg",
   };
   const handleDownload = () => {
